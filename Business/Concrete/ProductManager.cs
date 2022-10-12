@@ -33,15 +33,17 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductAdded);
         }
 
-        public List<Product> GetAll()
+        public IDataResult<List<Product>> GetAll()
         {
-            // business codes
-            // after passing the business codes, data access is provided
+            if (DataTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult();
+            }
 
-            return _productDal.GetAll();
+            return new SuccessDataResult<List<Product>>( _productDal.GetAll(),true,"Ürünler listelendi");
         }
 
-        public List<Product> GetAllByCategoryId(int id)
+        public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
             return _productDal.GetAll(p=>p.CategoryId==id);
         }
